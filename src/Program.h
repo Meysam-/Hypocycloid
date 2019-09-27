@@ -35,4 +35,5 @@ private:
 	void drawUI();
 
 	void createTestGeometryObject();
+	void createTestGeometryObject1();
 };

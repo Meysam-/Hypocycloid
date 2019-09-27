@@ -72,8 +72,18 @@ void Program::createTestGeometryObject() {
 	Geometry* testObject = new Geometry();
 
 	testObject->verts.push_back(glm::vec3(-5.f, -3.f, 0.f));
+	testObject->verts.push_back(glm::vec3(5.f, -3.f, 0.f));
+	testObject->verts.push_back(glm::vec3(0.f, 5.f, 0.f));
+	renderEngine->assignBuffers(*testObject);
+	renderEngine->updateBuffers(*testObject);
+	geometryObjects.push_back(testObject);
+}
+
+void Program::createTestGeometryObject1() {
+	Geometry* testObject = new Geometry(GL_POINTS);
+
+	testObject->verts.push_back(glm::vec3(-5.f, -3.f, 0.f));
 	//testObject->verts.push_back(glm::vec3(5.f, -3.f, 0.f));
-	//testObject->verts.push_back(glm::vec3(0.f, 5.f, 0.f));
 	renderEngine->assignBuffers(*testObject);
 	renderEngine->updateBuffers(*testObject);
 	geometryObjects.push_back(testObject);
@@ -118,7 +128,7 @@ void Program::drawUI() {
 // Main loop
 void Program::mainLoop() {
 
-	createTestGeometryObject();
+	createTestGeometryObject1();
 
 	// Our state
 	show_test_window = false;

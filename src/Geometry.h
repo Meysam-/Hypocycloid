@@ -9,6 +9,7 @@ class Geometry {
 
 public:
 	Geometry();
+	Geometry(GLuint);
 
 	GLuint drawMode;
 
