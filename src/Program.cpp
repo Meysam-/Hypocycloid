@@ -57,8 +57,8 @@ void Program::setupWindow() {
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
     // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-    ImGui::StyleColorsClassic();
+    //ImGui::StyleColorsDark();
+    //ImGui::StyleColorsClassic();
 
 	const char* glsl_version = "#version 430 core";
 
@@ -88,6 +88,23 @@ void Program::createTestGeometryObject1() {
 	renderEngine->assignBuffers(*testObject);
 	renderEngine->updateBuffers(*testObject);
 	geometryObjects.push_back(testObject);
+}
+
+void Program::createPoint(float x, float y){
+	Geometry* testObject = new Geometry(GL_POINTS);
+	testObject->verts.push_back(glm::vec3(x, y, 0.f));
+	renderEngine->assignBuffers(*testObject);
+	renderEngine->updateBuffers(*testObject);
+	geometryObjects.push_back(testObject);
+}
+
+void Program::createHypocycliod(float R, float r, int n, float rotation = 0, float scale = 1) {
+	float epsilon = 0.001;
+	for (float theta = 0; theta <= 2 * 3.141592 * n; theta += epsilon) {
+		float x = (R - r) * cos(theta) + r * cos(((R - r) * theta) / r);
+		float y = (R - r) * sin(theta) - r * sin(((R - r) * theta) / r);
+		createPoint(x, y);
+	}
 }
 
 void Program::drawUI() {
@@ -129,7 +146,8 @@ void Program::drawUI() {
 // Main loop
 void Program::mainLoop() {
 
-	createTestGeometryObject1();
+	//createTestGeometryObject1();
+	createHypocycliod(5, 1.2, 5);
 
 	// Our state
 	show_test_window = false;
@@ -147,6 +165,7 @@ void Program::mainLoop() {
 		glViewport(0, 0, display_w, display_h);
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
+		glPointSize(1);
 		glColor3f(0.5, 0.2, 0.3);
 
 		renderEngine->render(geometryObjects, glm::mat4(1.f));

@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <vector>
+#include <math.h>
 
 #include "Geometry.h"
 #include "InputHandler.h"
@@ -36,4 +37,6 @@ private:
 
 	void createTestGeometryObject();
 	void createTestGeometryObject1();
+	void createPoint(float, float);
+	void createHypocycliod(float R, float r, int n, float rotation, float scale);
 };
