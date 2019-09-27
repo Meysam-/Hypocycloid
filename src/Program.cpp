@@ -81,7 +81,8 @@ void Program::createTestGeometryObject() {
 
 void Program::createTestGeometryObject1() {
 	Geometry* testObject = new Geometry(GL_POINTS);
-
+	glPointSize(5);
+	glColor3f(1, 0, 0);
 	testObject->verts.push_back(glm::vec3(-5.f, -3.f, 0.f));
 	//testObject->verts.push_back(glm::vec3(5.f, -3.f, 0.f));
 	renderEngine->assignBuffers(*testObject);
@@ -146,6 +147,7 @@ void Program::mainLoop() {
 		glViewport(0, 0, display_w, display_h);
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
+		glColor3f(0.5, 0.2, 0.3);
 
 		renderEngine->render(geometryObjects, glm::mat4(1.f));
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
