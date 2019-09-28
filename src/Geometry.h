@@ -16,6 +16,7 @@ public:
 	GLuint vao;
 	GLuint vertexBuffer;
 	std::vector<glm::vec3> verts;
+	glm::vec3 color;
 	glm::mat4 modelMatrix;
 };
 

@@ -74,6 +74,7 @@ void Program::createTestGeometryObject() {
 	testObject->verts.push_back(glm::vec3(-5.f, -3.f, 0.f));
 	testObject->verts.push_back(glm::vec3(5.f, -3.f, 0.f));
 	testObject->verts.push_back(glm::vec3(0.f, 5.f, 0.f));
+	testObject->color = glm::vec3(1, 0, 0);
 	renderEngine->assignBuffers(*testObject);
 	renderEngine->updateBuffers(*testObject);
 	geometryObjects.push_back(testObject);
@@ -90,21 +91,31 @@ void Program::createTestGeometryObject1() {
 	geometryObjects.push_back(testObject);
 }
 
-void Program::createPoint(float x, float y){
-	Geometry* testObject = new Geometry(GL_POINTS);
-	testObject->verts.push_back(glm::vec3(x, y, 0.f));
-	renderEngine->assignBuffers(*testObject);
-	renderEngine->updateBuffers(*testObject);
-	geometryObjects.push_back(testObject);
-}
-
 void Program::createHypocycliod(float R, float r, int n, float rotation = 0, float scale = 1) {
-	float epsilon = 0.001;
-	for (float theta = 0; theta <= 2 * 3.141592 * n; theta += epsilon) {
+	Geometry* hypocycliod = new Geometry(GL_LINE_STRIP);
+	hypocycliod->color = glm::vec3(1, 0, 0);
+	float epsilon = 0.01;
+	const float PI = 3.141592;
+	rotation = (rotation * PI) / 180.0; // Convert to radians
+
+
+	for (float theta = 0; theta <= 2 * PI * n; theta += epsilon) {
 		float x = (R - r) * cos(theta) + r * cos(((R - r) * theta) / r);
 		float y = (R - r) * sin(theta) - r * sin(((R - r) * theta) / r);
-		createPoint(x, y);
+
+		//Rotation phase
+		//float x_rotated = (x * cos(rotation)) - (y * sin(rotation));
+		//float y_rotated = (x * sin(rotation)) + (y * cos(rotation));
+
+		//Scale phase
+		x = x * scale;
+		y = y * scale;
+		hypocycliod->modelMatrix = glm::rotate(rotation, glm::vec3(0, 0, 1));
+		hypocycliod->verts.push_back(glm::vec3(x, y, 0.f));
 	}
+	renderEngine->assignBuffers(*hypocycliod);
+	renderEngine->updateBuffers(*hypocycliod);
+	geometryObjects.push_back(hypocycliod);
 }
 
 void Program::drawUI() {
@@ -147,7 +158,7 @@ void Program::drawUI() {
 void Program::mainLoop() {
 
 	//createTestGeometryObject1();
-	createHypocycliod(5, 1.2, 5);
+	createHypocycliod(4, 1, 1, 45, 1);
 
 	// Our state
 	show_test_window = false;
@@ -166,7 +177,6 @@ void Program::mainLoop() {
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glPointSize(1);
-		glColor3f(0.5, 0.2, 0.3);
 
 		renderEngine->render(geometryObjects, glm::mat4(1.f));
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

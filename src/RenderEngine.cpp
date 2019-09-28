@@ -26,6 +26,7 @@ void RenderEngine::render(const std::vector<Geometry*>& objects, glm::mat4 view)
 		glm::mat4 modelView = view * o->modelMatrix;
 		glUniformMatrix4fv(glGetUniformLocation(mainProgram, "modelView"), 1, GL_FALSE, glm::value_ptr(modelView));
 		glUniformMatrix4fv(glGetUniformLocation(mainProgram, "ortho"), 1, GL_FALSE, glm::value_ptr(ortho));
+		glUniform3fv(glGetUniformLocation(mainProgram, "color"), 1, glm::value_ptr(o->color));
 
 		glDrawArrays(o->drawMode, 0, o->verts.size());
 		glBindVertexArray(0);
