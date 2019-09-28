@@ -126,7 +126,8 @@ void Program::drawUI() {
 
 	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 	{
-		static int counter = 0;
+		static int n = 5;
+		static float R = 5, r = 2, rotation = 0, scale = 1;
 
 		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 
@@ -135,11 +136,17 @@ void Program::drawUI() {
 
 		ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
-		if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-			counter++;
-		ImGui::SameLine();
-		ImGui::Text("counter = %d", counter);
-
+		//ImGui::SameLine();
+		//ImGui::Text("counter = %d", counter);
+		ImGui::SliderFloat("R (radius of larger circle)", &R, 1.0f, 20.0f);
+		ImGui::SliderFloat("r (radius of smaller circle)", &r, 1.0f, 20.0f);
+		ImGui::SliderFloat("rotation (degree)", &rotation, 0.f, 360.0f);
+		ImGui::SliderFloat("scale", &scale, 0.0f, 1.0f);
+		ImGui::SliderInt("n (Number of cycles)", &n, 1, 100);
+		if (ImGui::Button("Draw")) {                            // Buttons return true when clicked (most widgets return true when edited/activated)
+			geometryObjects.clear();
+			createHypocycliod(R, r, n, rotation, scale);
+		}
 		ImGui::End();
 	}
 
