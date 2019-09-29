@@ -27,7 +27,11 @@ public:
 private:
 	GLFWwindow* window;
 	RenderEngine* renderEngine;
+	int n;
+	float R, r, rotation, scale, theta;
+	bool animation;
 
+	Geometry *h, *C, *c;
 	std::vector<Geometry*> geometryObjects;
 
 	bool show_test_window;
@@ -40,6 +44,7 @@ private:
 
 	void createTestGeometryObject();
 	void createTestGeometryObject1();
-	void createPoint(float, float);
-	void createHypocycliod(float R, float r, int n, float rotation, float scale);
+	Geometry* createHypocycloid(float R, float r, int n, float rotation, float scale, bool animate);
+	Geometry* createCircle(float r, float center_x, float center_y,float rotation, float scale);
+	//Geometry* Program::createLine(float x, float y, float rotation)
 };
